@@ -6,10 +6,22 @@ var yMousePosition = 0;
 var running = true;
 var gameOver = false;
 var start = false;
+var gameTimer = 0;
 
 var playerBullet = [];
 var enemyBullet = [];
-var enemies = [[100, 0]];
+var enemiesFuture = [
+    [250, 0, 100],
+    [750, 0, 100],
+    [100, 0, 200],
+    [1100, 0, 200],
+    [500, 0, 200],
+];
+var enemies = [
+    [100, 0],
+    [1100, 0],
+    [500, 0],
+];
 
 var imageVirus = new Image();
 imageVirus.src = "virus.png";
@@ -82,7 +94,7 @@ function handleBullet() {
         );
 
         if (enemyBullet[index][1] + 15 >= canvas.clientHeight) {
-            enemyBullet.pop();
+            enemyBullet.splice(index, 1);
         } else {
             enemyBullet[index] = [
                 enemyBullet[index][0],
@@ -101,7 +113,7 @@ function handleBullet() {
         );
 
         if (playerBullet[index][1] - 15 <= 0) {
-            playerBullet.pop();
+            playerBullet.splice(index, 1);
         } else {
             playerBullet[index] = [
                 playerBullet[index][0],
@@ -181,11 +193,13 @@ function handleEnemies() {
         drawEnemy(enemies[index][0], enemies[index][1]);
 
         if (enemies[index][1] + 5 >= canvas.clientHeight) {
-            enemies.pop();
+            enemies.splice(index, 1);
         } else {
             enemies[index][1] = enemies[index][1] + 5;
         }
     }
+
+    spawnEnemies();
 }
 
 function renderScreen() {
@@ -195,6 +209,7 @@ function renderScreen() {
         handleEnemies();
         handleBullet();
         handleCollision();
+        gameTimer++;
     } else if (!gameOver && !start) {
         ctx.beginPath();
         ctx.rect(0, 0, canvas.clientWidth, canvas.clientHeight);
@@ -209,6 +224,15 @@ function renderScreen() {
         ctx.fill();
         ctx.stroke();
         ctx.closePath();
+    }
+}
+
+function spawnEnemies() {
+    for (let i = 0; i < enemiesFuture.length; i++) {
+        if (gameTimer >= enemiesFuture[i][2]) {
+            enemies.unshift([enemiesFuture[i][0], enemiesFuture[i][1]]);
+            enemiesFuture.splice(i, 1);
+        }
     }
 }
 

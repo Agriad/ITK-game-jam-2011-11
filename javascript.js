@@ -44,7 +44,7 @@ function drawBullet(x, y, color) {
 
 function drawEnemy(x, y) {
     ctx.beginPath();
-    ctx.arc(x, y, 25, 0, 2 * Math.PI, 2 * Math.PI);
+    ctx.rect(x, y, 35, 35);
     ctx.fillStyle = "#eb8c1e";
     ctx.fill();
     ctx.stroke();
@@ -53,7 +53,7 @@ function drawEnemy(x, y) {
 
 function drawPlayer(x, y) {
     ctx.beginPath();
-    ctx.arc(x, y, 25, 0, 2 * Math.PI, 2 * Math.PI);
+    ctx.rect(x, y, 35, 35);
     ctx.fillStyle = "#ffffff";
     ctx.fill();
     ctx.stroke();
@@ -105,6 +105,49 @@ function handleBullet() {
     }
 }
 
+function handleCollision() {
+    // Check player and enemy collision
+    for (let index = 0; index < enemies.length; index++) {
+        let enemyHorizontalSize = enemies[index][0] + 35;
+        let enemyVerticalSize = enemies[index][1] + 35;
+
+        if (
+            xMousePosition < enemyHorizontalSize &&
+            xMousePosition + 35 > enemies[index][0]
+        ) {
+            if (
+                yMousePosition < enemyVerticalSize &&
+                yMousePosition + 35 > enemies[index][1]
+            ) {
+                console.log("game over");
+                gameOver = true;
+
+                return;
+            }
+        }
+    }
+
+    // Check player and enemy bullet collision
+    for (let index = 0; index < enemyBullet.length; index++) {
+        let enemyBulletHorizontalSize = enemyBullet[index][0] + 8;
+        let enemyBulletVerticalSize = enemyBullet[index][1] + 16;
+
+        if (
+            xMousePosition < enemyBulletHorizontalSize &&
+            xMousePosition + 35 > enemyBullet[index][0]
+        ) {
+            if (
+                yMousePosition < enemyBulletVerticalSize &&
+                yMousePosition + 35 > enemyBullet[index][1]
+            ) {
+                gameOver = true;
+
+                return;
+            }
+        }
+    }
+}
+
 function handleEnemies() {
     for (let index = 0; index < enemies.length; index++) {
         drawEnemy(enemies[index][0], enemies[index][1]);
@@ -118,10 +161,20 @@ function handleEnemies() {
 }
 
 function renderScreen() {
-    drawBackground();
-    drawPlayer(xMousePosition, yMousePosition);
-    handleEnemies();
-    handleBullet();
+    if (!gameOver) {
+        drawBackground();
+        drawPlayer(xMousePosition, yMousePosition);
+        handleEnemies();
+        handleBullet();
+        handleCollision();
+    } else {
+        ctx.beginPath();
+        ctx.rect(0, 0, canvas.clientWidth, canvas.clientHeight);
+        ctx.fillStyle = "#eb341e";
+        ctx.fill();
+        ctx.stroke();
+        ctx.closePath();
+    }
 }
 
 function startGame() {

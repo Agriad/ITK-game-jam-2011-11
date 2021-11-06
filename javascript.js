@@ -16,7 +16,7 @@ canvas.addEventListener("click", startGame, false);
 
 function addEnemyBullet() {
     for (let index = 0; index < enemies.length; index++) {
-        enemyBullet.unshift([enemies[0], enemies[1], "#eb341e"]);
+        enemyBullet.unshift([enemies[index][0], enemies[index][1], "#eb341e"]);
     }
 }
 
@@ -67,16 +67,23 @@ function findCursor(event) {
 
 function handleBullet() {
     // handle enemies bullet
+    for (let index = 0; index < enemyBullet.length; index++) {
+        drawBullet(
+            enemyBullet[index][0],
+            enemyBullet[index][1],
+            enemyBullet[index][2]
+        );
 
-    // if (playerBullet[index][1] + 15 <= canvas.clientHeight) {
-    //     playerBullet.pop();
-    // } else {
-    //     playerBullet[index] = [
-    //         playerBullet[index][0],
-    //         playerBullet[index][1] + 15,
-    //         playerBullet[index][2],
-    //     ];
-    // }
+        if (enemyBullet[index][1] + 15 >= canvas.clientHeight) {
+            enemyBullet.pop();
+        } else {
+            enemyBullet[index] = [
+                enemyBullet[index][0],
+                enemyBullet[index][1] + 15,
+                enemyBullet[index][2],
+            ];
+        }
+    }
 
     // handle player bullet
     for (let index = 0; index < playerBullet.length; index++) {
@@ -113,8 +120,8 @@ function handleEnemies() {
 function renderScreen() {
     drawBackground();
     drawPlayer(xMousePosition, yMousePosition);
-    handleBullet();
     handleEnemies();
+    handleBullet();
 }
 
 function startGame() {
@@ -123,3 +130,4 @@ function startGame() {
 
 setInterval(renderScreen, 100);
 setInterval(addPlayerBullet, 250);
+setInterval(addEnemyBullet, 1500);

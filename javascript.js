@@ -21,7 +21,7 @@ var enemiesFuture = [
     [500, 0, 350],
     [1100, 0, 400],
     [900, 0, 425],
-    [700, 0, 450]
+    [700, 0, 450],
 ];
 var enemies = [
     [100, 0],
@@ -239,6 +239,11 @@ function spawnEnemies() {
             enemies.unshift([enemiesFuture[i][0], enemiesFuture[i][1]]);
             enemiesFuture.splice(i, 1);
         }
+    }
+
+    if (gameTimer >= 500) {
+        let xValue = Math.floor(Math.random() * 1200 + 10);
+        enemiesFuture.unshift([xValue, 0, gameTimer + 25]);
     }
 }
 

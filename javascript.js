@@ -11,6 +11,11 @@ var playerBullet = [];
 var enemyBullet = [];
 var enemies = [[100, 0]];
 
+var imageVirus = new Image();
+imageVirus.src = "virus.png";
+var imageNat = new Image();
+imageNat.src = "nat.png";
+
 canvas.addEventListener("mousemove", findCursor, false);
 canvas.addEventListener("click", startGame, false);
 
@@ -49,6 +54,7 @@ function drawEnemy(x, y) {
     ctx.fill();
     ctx.stroke();
     ctx.closePath();
+    ctx.drawImage(imageVirus, x, y, 35, 35);
 }
 
 function drawPlayer(x, y) {
@@ -58,6 +64,7 @@ function drawPlayer(x, y) {
     ctx.fill();
     ctx.stroke();
     ctx.closePath();
+    ctx.drawImage(imageNat, x, y, 35, 35);
 }
 
 function findCursor(event) {
@@ -188,16 +195,14 @@ function renderScreen() {
         handleEnemies();
         handleBullet();
         handleCollision();
-    } 
-    else if (!gameOver && !start) {
+    } else if (!gameOver && !start) {
         ctx.beginPath();
         ctx.rect(0, 0, canvas.clientWidth, canvas.clientHeight);
         ctx.fillStyle = "#313edd";
         ctx.fill();
         ctx.stroke();
         ctx.closePath();
-    } 
-    else {
+    } else {
         ctx.beginPath();
         ctx.rect(0, 0, canvas.clientWidth, canvas.clientHeight);
         ctx.fillStyle = "#eb341e";

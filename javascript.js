@@ -5,8 +5,14 @@ var xMousePosition = 0;
 var yMousePosition = 0;
 var clickAction = false;
 
+var playerBullet = [];
+
 canvas.addEventListener("mousemove", findCursor, false);
 canvas.addEventListener("click", clickHandler, false);
+
+function addPlayerBullet() {
+    playerBullet.unshift([xMousePosition, yMousePosition, "#ffffff"]);
+}
 
 function drawBackground() {
     ctx.beginPath();
@@ -17,39 +23,44 @@ function drawBackground() {
     ctx.closePath();
 }
 
-function drawCircle(x, y) {
+function drawBullet(x, y, color) {
     ctx.beginPath();
-    ctx.arc(x, y, 100, 0, 2 * Math.PI, 2 * Math.PI);
+    ctx.rect(x, y, 8, 16);
+    ctx.fillStyle = color;
+    ctx.fill();
+    ctx.stroke();
+    ctx.closePath();
+}
+
+function drawPlayer(x, y) {
+    ctx.beginPath();
+    ctx.arc(x, y, 25, 0, 2 * Math.PI, 2 * Math.PI);
     ctx.fillStyle = "#ffffff";
     ctx.fill();
     ctx.stroke();
     ctx.closePath();
 }
 
-function drawSquare(x, y) {
-    ctx.beginPath();
-    ctx.rect(x, y, 0, 50, 50);
-    ctx.fillStyle = "#1F85DE";
-    ctx.fill();
-    ctx.stroke();
-    ctx.closePath();
-}
+function handleBullet() {
+    // handle player bullet
+    console.log(yMousePosition);
 
-function drawSquareAnimation() {
-    if (clickAction) {
-        for (let index = 0; index < 10; index++) {
-            drawBackground();
-            // drawCircle();
-            drawSquare(xMousePosition, yMousePosition + index);
+    for (let index = 0; index < playerBullet.length; index++) {
+        drawBullet(
+            playerBullet[index][0],
+            playerBullet[index][1],
+            playerBullet[index][2]
+        );
+
+        if (playerBullet[index][1] - 15 <= 0) {
+            playerBullet.pop();
+        } else {
+            playerBullet[index] = [
+                playerBullet[index][0],
+                playerBullet[index][1] - 15,
+                playerBullet[index][2],
+            ];
         }
-    
-        for (let index = 10; index > 0; index++) {
-            drawBackground();
-            // drawCircle();
-            drawSquare(xMousePosition, yMousePosition + index);
-        }
-        
-        clickAction = false;
     }
 }
 
@@ -62,10 +73,11 @@ function clickHandler(event) {
     clickAction = true;
 }
 
-function test() {
+function renderScreen() {
     drawBackground();
-    drawCircle(xMousePosition, yMousePosition);
-    drawSquareAnimation();
+    drawPlayer(xMousePosition, yMousePosition);
+    handleBullet();
 }
 
-setInterval(test, 100);
+setInterval(renderScreen, 100);
+setInterval(addPlayerBullet, 250);

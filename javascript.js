@@ -111,12 +111,12 @@ function handleBullet() {
             enemyBullet[index][2]
         );
 
-        if (enemyBullet[index][1] + 15 >= canvas.clientHeight) {
+        if (enemyBullet[index][1] + 5 >= canvas.clientHeight) {
             enemyBullet.splice(index, 1);
         } else {
             enemyBullet[index] = [
                 enemyBullet[index][0],
-                enemyBullet[index][1] + 15,
+                enemyBullet[index][1] + 5,
                 enemyBullet[index][2],
             ];
         }
@@ -130,12 +130,12 @@ function handleBullet() {
             playerBullet[index][2]
         );
 
-        if (playerBullet[index][1] - 15 <= 0) {
+        if (playerBullet[index][1] - 5 <= 0) {
             playerBullet.splice(index, 1);
         } else {
             playerBullet[index] = [
                 playerBullet[index][0],
-                playerBullet[index][1] - 15,
+                playerBullet[index][1] - 5,
                 playerBullet[index][2],
             ];
         }
@@ -210,10 +210,10 @@ function handleEnemies() {
     for (let index = 0; index < enemies.length; index++) {
         drawEnemy(enemies[index][0], enemies[index][1]);
 
-        if (enemies[index][1] + 5 >= canvas.clientHeight) {
+        if (enemies[index][1] + 1 >= canvas.clientHeight) {
             enemies.splice(index, 1);
         } else {
-            enemies[index][1] = enemies[index][1] + 5;
+            enemies[index][1] = enemies[index][1] + 2;
         }
     }
 
@@ -268,6 +268,6 @@ function updateScore() {
     score.innerText = "score = " + points;
 }
 
-setInterval(renderScreen, 100);
+setInterval(renderScreen, 10);
 setInterval(addPlayerBullet, 500);
 setInterval(addEnemyBullet, 1500);

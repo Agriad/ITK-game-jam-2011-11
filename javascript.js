@@ -146,6 +146,27 @@ function handleCollision() {
             }
         }
     }
+
+    // Check enemy and player bullet collision
+    for (let i = 0; i < playerBullet.length; i++) {
+        let playerBulletHorizontalSize = playerBullet[i][0] + 8;
+        let playerBulletVerticalSize = playerBullet[i][1] + 16;
+
+        for (let j = 0; j < enemies.length; j++) {
+            if (
+                enemies[j][0] < playerBulletHorizontalSize &&
+                enemies[j][0] + 35 > playerBullet[i][0]
+            ) {
+                if (
+                    enemies[j][1] < playerBulletVerticalSize &&
+                    enemies[j][1] + 35 > playerBullet[i][1]
+                ) {
+                    // Delete enemy
+                    enemies.splice(j, 1);
+                }
+            }
+        }
+    }
 }
 
 function handleEnemies() {
@@ -182,5 +203,5 @@ function startGame() {
 }
 
 setInterval(renderScreen, 100);
-setInterval(addPlayerBullet, 250);
+setInterval(addPlayerBullet, 500);
 setInterval(addEnemyBullet, 1500);

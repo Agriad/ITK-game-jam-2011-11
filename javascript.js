@@ -1,5 +1,6 @@
 var canvas = document.getElementById("gameCanvas");
 var ctx = canvas.getContext("2d");
+var score = document.getElementById("score");
 
 var xMousePosition = 0;
 var yMousePosition = 0;
@@ -7,6 +8,7 @@ var running = true;
 var gameOver = false;
 var start = false;
 var gameTimer = 0;
+var points = 0;
 
 var playerBullet = [];
 var enemyBullet = [];
@@ -144,7 +146,6 @@ function handleCollision() {
                 yMousePosition < enemyVerticalSize &&
                 yMousePosition + 35 > enemies[index][1]
             ) {
-                console.log("game over");
                 gameOver = true;
 
                 return;
@@ -188,6 +189,7 @@ function handleCollision() {
                 ) {
                     // Delete enemy
                     enemies.splice(j, 1);
+                    points += 50;
                 }
             }
         }
@@ -215,6 +217,7 @@ function renderScreen() {
         handleEnemies();
         handleBullet();
         handleCollision();
+        updateScore();
         gameTimer++;
     } else if (!gameOver && !start) {
         ctx.beginPath();
@@ -249,6 +252,10 @@ function spawnEnemies() {
 
 function startGame() {
     start = true;
+}
+
+function updateScore() {
+    score.innerText = "score = " + points;
 }
 
 setInterval(renderScreen, 100);

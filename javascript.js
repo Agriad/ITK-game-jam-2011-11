@@ -35,6 +35,10 @@ var imageVirus = new Image();
 imageVirus.src = "virus.png";
 var imageNat = new Image();
 imageNat.src = "nat.png";
+var background = new Image();
+background.src = "background.png";
+var backgroundDanger = new Image();
+backgroundDanger.src = "background-danger.png";
 
 canvas.addEventListener("mousemove", findCursor, false);
 canvas.addEventListener("click", startGame, false);
@@ -56,6 +60,12 @@ function drawBackground() {
     ctx.fill();
     ctx.stroke();
     ctx.closePath();
+
+    if (gameTimer > 550 && gameTimer < 600) {
+        ctx.drawImage(backgroundDanger, 0, 0);
+    } else {
+        ctx.drawImage(background, 0, 0);
+    }
 }
 
 function drawBullet(x, y, color) {
@@ -244,7 +254,7 @@ function spawnEnemies() {
         }
     }
 
-    if (gameTimer >= 500) {
+    if (gameTimer >= 600) {
         let xValue = Math.floor(Math.random() * 1200 + 10);
         enemiesFuture.unshift([xValue, 0, gameTimer + 25]);
     }

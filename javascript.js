@@ -13,17 +13,17 @@ var points = 0;
 var playerBullet = [];
 var enemyBullet = [];
 var enemiesFuture = [
-    [250, 0, 100],
-    [750, 0, 100],
-    [100, 0, 200],
-    [1100, 0, 200],
-    [500, 0, 200],
-    [100, 0, 300],
-    [300, 0, 325],
-    [500, 0, 350],
-    [1100, 0, 400],
-    [900, 0, 425],
-    [700, 0, 450],
+    [250, 0, 250],
+    [750, 0, 250],
+    [100, 0, 500],
+    [1100, 0, 500],
+    [500, 0, 500],
+    [100, 0, 750],
+    [300, 0, 850],
+    [500, 0, 900],
+    [1100, 0, 1100],
+    [900, 0, 1200],
+    [700, 0, 1300],
 ];
 var enemies = [
     [100, 0],
@@ -61,7 +61,7 @@ function drawBackground() {
     ctx.stroke();
     ctx.closePath();
 
-    if (gameTimer > 550 && gameTimer < 600) {
+    if (gameTimer > 1500 && gameTimer < 1750) {
         ctx.drawImage(backgroundDanger, 0, 0);
     } else {
         ctx.drawImage(background, 0, 0);
@@ -253,8 +253,14 @@ function spawnEnemies() {
             enemiesFuture.splice(i, 1);
         }
     }
+}
 
-    if (gameTimer >= 600) {
+function spawnRandomEnemies() {
+    if (gameTimer >= 1800) {
+        let xValue = Math.floor(Math.random() * 1200 + 10);
+        enemiesFuture.unshift([xValue, 0, gameTimer + 25]);
+    }
+    if (gameTimer > 3600) {
         let xValue = Math.floor(Math.random() * 1200 + 10);
         enemiesFuture.unshift([xValue, 0, gameTimer + 25]);
     }
@@ -269,5 +275,6 @@ function updateScore() {
 }
 
 setInterval(renderScreen, 10);
+setInterval(spawnRandomEnemies, 100);
 setInterval(addPlayerBullet, 500);
 setInterval(addEnemyBullet, 1500);

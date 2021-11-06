@@ -182,13 +182,22 @@ function handleEnemies() {
 }
 
 function renderScreen() {
-    if (!gameOver) {
+    if (!gameOver && start) {
         drawBackground();
         drawPlayer(xMousePosition, yMousePosition);
         handleEnemies();
         handleBullet();
         handleCollision();
-    } else {
+    } 
+    else if (!gameOver && !start) {
+        ctx.beginPath();
+        ctx.rect(0, 0, canvas.clientWidth, canvas.clientHeight);
+        ctx.fillStyle = "#313edd";
+        ctx.fill();
+        ctx.stroke();
+        ctx.closePath();
+    } 
+    else {
         ctx.beginPath();
         ctx.rect(0, 0, canvas.clientWidth, canvas.clientHeight);
         ctx.fillStyle = "#eb341e";
@@ -199,7 +208,7 @@ function renderScreen() {
 }
 
 function startGame() {
-    console.log("game start");
+    start = true;
 }
 
 setInterval(renderScreen, 100);
